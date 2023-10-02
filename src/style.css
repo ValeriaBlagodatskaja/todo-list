@@ -1,3 +1,24 @@
-h1 {
-  color: blue;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+}
+
+.content {
+}
+
+.headerIcon {
+  width: 20px;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
 }
