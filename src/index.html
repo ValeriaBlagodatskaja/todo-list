@@ -5,14 +5,61 @@
   </head>
   <body>
     <header class="header">
-      TO-DO
-      <img alt="To-Do List" src="images/to-do-list.png" class="headerIcon" />
+      <img alt="To-Do List" src="images/todo-list-50.png" class="headerIcon" />
+      Todo List
     </header>
     <main id="content" class="content">
-      <button id="showFormButton">+</button>
-      <div>side bar</div>
-      <div>main area</div>
+      <div class="sidebar">
+        <div class="default-buttons">
+          <button id="homeButton" class="btn homeButton">
+            <img alt="Home Icon" src="images/home.png" class="homeIcon" />
+            Home
+          </button>
+          <button id="todayButton" class="btn todayButton">
+            <img alt="Today Icon" src="images/today.png" class="todayIcon" />
+            Today
+          </button>
+          <button id="weekButton" class="btn weekButton">
+            <img alt="Week Icon" src="images/week.png" class="weekIcon" />
+            Week
+          </button>
+          <h1>Projects</h1>
+          <div id="projectsList"></div>
+          <button id="addProjectButton" class="btn addProjectButton">
+            <img alt="Add Icon" src="images/plus.png" class="plusIcon" /> Add
+            project
+          </button>
+          <form id="projectForm" style="display: none">
+            <input
+              type="text"
+              id="projectName"
+              class="projectNameInput"
+              placeholder="Project Name "
+            />
+            <button
+              type="submit"
+              id="addProjectButton"
+              class="addProjectButton"
+            >
+              Add
+            </button>
+            <button
+              type="button"
+              id="cancelProjectButton"
+              class="cancelProjectButton"
+            >
+              Cancel
+            </button>
+          </form>
+        </div>
+      </div>
+      <div id="mainArea" class="mainArea"></div>
     </main>
-    <footer>Footer</footer>
+    <footer class="footer">
+      Copyright © 2023 ValeriaBlagodatskaja
+      <a href="https://github.com/ValeriaBlagodatskaja" target="_blank">
+        <img alt="Github Icon" src="images/github.png" class="githubIcon" />
+      </a>
+    </footer>
   </body>
 </html>
