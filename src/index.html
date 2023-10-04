@@ -24,25 +24,19 @@
             Week
           </button>
           <h1>Projects</h1>
-          <div id="projectsList"></div>
-          <button id="addProjectButton" class="btn addProjectButton">
+          <ul id="projectList"></ul>
+          <button id="showAddProjectForm" class="btn addProjectButton">
             <img alt="Add Icon" src="images/plus.png" class="plusIcon" /> Add
             project
           </button>
-          <form id="projectForm" style="display: none">
+          <form id="projectForm" class="hide">
             <input
               type="text"
               id="projectName"
               class="projectNameInput"
               placeholder="Project Name "
             />
-            <button
-              type="submit"
-              id="addProjectButton"
-              class="addProjectButton"
-            >
-              Add
-            </button>
+            <button type="submit" class="addProjectButton">Add</button>
             <button
               type="button"
               id="cancelProjectButton"
@@ -54,6 +48,14 @@
         </div>
       </div>
       <div id="mainArea" class="mainArea"></div>
+      <div id="taskModal" class="modal">
+        <div class="modal-content">
+          <h3>Add Task</h3>
+          <input type="text" id="taskName" placeholder="Task name..." />
+          <button id="addTask">Add</button>
+          <button id="closeModal">Cancel</button>
+        </div>
+      </div>
     </main>
     <footer class="footer">
       Copyright © 2023 ValeriaBlagodatskaja
