@@ -48,14 +48,21 @@
         </div>
       </div>
       <div id="mainArea" class="mainArea"></div>
-      <div id="taskModal" class="modal">
-        <div class="modal-content">
+      <dialog id="taskDialog">
+        <form method="dialog" id="taskForm">
           <h3>Add Task</h3>
           <input type="text" id="taskName" placeholder="Task name..." />
-          <button id="addTask">Add</button>
+          <textarea id="taskDescription" placeholder="Description"></textarea>
+          <input type="date" id="taskDueDate" />
+          <select id="taskPriority">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+          <button id="submitTask" type="submit">Add</button>
           <button id="closeModal">Cancel</button>
-        </div>
-      </div>
+        </form>
+      </dialog>
     </main>
     <footer class="footer">
       Copyright © 2023 ValeriaBlagodatskaja
