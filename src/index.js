@@ -6,6 +6,10 @@ import {
   addTask,
   Todo,
   getTodaysTasks,
+  getWeeksTasks,
+  removeProject,
+  removeTask,
+  updateTaskInLocalStorage,
 } from "./localStorage/projects";
 import { showElement, hideElement } from "../utils/hideElement";
 
@@ -20,6 +24,7 @@ const projectForm = document.getElementById("projectForm");
 const cancelProjectButton = document.getElementById("cancelProjectButton");
 const mainArea = document.getElementById("mainArea");
 const todayButton = document.getElementById("todayButton");
+const weekButton = document.getElementById("weekButton");
 
 const taskDialog = document.getElementById("taskDialog");
 const closeModalButton = document.getElementById("closeModal");
@@ -164,10 +169,20 @@ projectForm.addEventListener("submit", (e) => {
     showElement(showAddProjectFormBtn);
   }
 });
+
 todayButton.addEventListener("click", () => {
   const tasksForToday = getTodaysTasks();
   mainArea.innerHTML = ""; // clear the main area
   tasksForToday.forEach((todoItem) => {
+    const taskElement = task(todoItem);
+    mainArea.appendChild(taskElement);
+  });
+});
+
+weekButton.addEventListener("click", () => {
+  const tasksForWeek = getWeeksTasks();
+  mainArea.innerHTML = "";
+  tasksForWeek.forEach((todoItem) => {
     const taskElement = task(todoItem);
     mainArea.appendChild(taskElement);
   });

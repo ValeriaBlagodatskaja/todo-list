@@ -61,6 +61,22 @@ export function getTodaysTasks() {
   return todaysTasks;
 }
 
+export function getWeeksTasks() {
+  const allProjects = getAllProjects();
+  const today = new Date();
+  const endOfWeek = new Date().add(4).day();
+
+  let weeksTasks = [];
+
+  allProjects.forEach((project) => {
+    const projectWeeksTasks = project.todos.filter((task) => {
+      const taskDate = Date.parse(task.dueDate);
+      return taskDate >= today && taskDate <= endOfWeek;
+    });
+    weeksTasks = weeksTasks.concat(projectWeeksTasks);
+  });
+  return weeksTasks;
+}
 export const removeProject = (projectName) => {
   const projects = getAllProjects();
   const filteredProjects = projects.filter((proj) => proj.name !== projectName);
