@@ -10,7 +10,7 @@ export class Todo {
   }
 
   displayTodo() {
-    console.log(`${this.title} - ${this.description} - Due: ${this.dueDate}`);
+    console.log(`${this.title} - ${this.description} - ${this.dueDate}`);
   }
 }
 
@@ -37,17 +37,29 @@ export const addProject = (project) => {
 export const addTask = (projectName, todo) => {
   const projects = getAllProjects();
   const project = projects.find((proj) => proj.name === projectName);
-  console.log("All projects:", projects);
-  console.log("Current project:", project);
 
   if (project && Array.isArray(project.todos)) {
     project.todos.push(todo);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
-    console.log(`Task '${todo.title}' added to project '${projectName}'.`);
   } else {
     console.log(`Project '${projectName}' not found.`);
   }
 };
+
+export function getTodaysTasks() {
+  const allProjects = getAllProjects();
+  const today = Date.today().toString("yyyy-MM-dd");
+  let todaysTasks = [];
+
+  allProjects.forEach((project) => {
+    const projectTodaysTasks = project.todos.filter(
+      (task) => task.dueDate === today
+    );
+    todaysTasks = todaysTasks.concat(projectTodaysTasks);
+  });
+
+  return todaysTasks;
+}
 
 export const removeProject = (projectName) => {
   const projects = getAllProjects();
@@ -63,3 +75,17 @@ export const removeTask = (projectName, taskName) => {
   }
   localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
 };
+
+export function updateTaskInLocalStorage(originalTitle, updatedTitle) {
+  const projects = getAllProjects();
+
+  for (let project of projects) {
+    for (let i = 0; i < project.todos.length; i++) {
+      if (project.todos[i].title === originalTitle) {
+        project.todos[i].title = updatedTitle;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+        return;
+      }
+    }
+  }
+}

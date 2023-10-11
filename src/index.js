@@ -5,6 +5,7 @@ import {
   addProject,
   addTask,
   Todo,
+  getTodaysTasks,
 } from "./localStorage/projects";
 import { showElement, hideElement } from "../utils/hideElement";
 
@@ -18,11 +19,15 @@ const showAddProjectFormBtn = document.getElementById("showAddProjectForm");
 const projectForm = document.getElementById("projectForm");
 const cancelProjectButton = document.getElementById("cancelProjectButton");
 const mainArea = document.getElementById("mainArea");
+const todayButton = document.getElementById("todayButton");
 
 const taskDialog = document.getElementById("taskDialog");
 const closeModalButton = document.getElementById("closeModal");
 const taskName = document.getElementById("taskName");
 const taskForm = document.getElementById("taskForm");
+const taskDescription = document.getElementById("taskDescription");
+const taskDueDate = document.getElementById("taskDueDate");
+const taskPriority = document.getElementById("taskPriority");
 
 function displayProjectList() {
   const projects = getAllProjects();
@@ -45,6 +50,8 @@ function displayProjectList() {
   });
 }
 
+let editingTodoIndex = null;
+
 function displayAddTaskButton() {
   const addTaskBtn = document.createElement("button");
   addTaskBtn.id = "addTaskBtnMain";
@@ -65,25 +72,50 @@ function displayAddTaskButton() {
     taskForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const taskValue = taskName.value;
-      const taskDescription = document.getElementById("taskDescription").value;
-      const taskDueDate = document.getElementById("taskDueDate").value;
-      const taskPriority = document.getElementById("taskPriority").value;
+      const taskDesc = taskDescription.value;
+      const taskDue = taskDueDate.value;
+      const taskPrio = taskPriority.value;
 
-      let newTask = new Todo(
-        taskValue,
-        taskDescription,
-        taskDueDate,
-        taskPriority
-      );
-      if (taskValue) {
-        hideElement(taskDialog);
+      let newTask = new Todo(taskValue, taskDesc, taskDue, taskPrio);
+      if (editingTodoIndex !== null) {
+        // Edit the existing todo
+        const projects = getAllProjects();
+        const currentProjectObj = projects.find(
+          (p) => p.name === currentProject
+        );
+        currentProjectObj.todos[editingTodoIndex] = newTask;
+
+        // Save it
+        localStorage.setItem("projects", JSON.stringify(projects));
+        editingTodoIndex = null; // Reset the editing index
+      } else {
+        // Create a new task
         addTask(currentProject, newTask);
-        const taskContainer = task(newTask);
-        mainArea.appendChild(taskContainer);
       }
+
+      hideElement(taskDialog);
+      displayInMainArea(currentProject);
+      displayAddTaskButton();
     });
     isTaskFormInitialized = true;
   }
+}
+
+function handleEditTask(editingTodo) {
+  taskName.value = editingTodo.title;
+  taskDescription.value = editingTodo.description;
+  taskDueDate.value = editingTodo.dueDate;
+  Date(editingTodo.value).toString("d-MMM-yyyy");
+  taskPriority.value = editingTodo.priority;
+
+  const projects = getAllProjects();
+  const currentProjectObj = projects.find((p) => p.name === currentProject);
+  editingTodoIndex = currentProjectObj.todos.findIndex(
+    (t) =>
+      t.title === editingTodo.title && t.description === editingTodo.description
+  );
+  // Show the modal
+  showElement(taskDialog);
 }
 
 function displayInMainArea(projectName) {
@@ -97,7 +129,7 @@ function displayInMainArea(projectName) {
 
   if (selectedProject && selectedProject.todos.length) {
     selectedProject.todos.forEach((todo) => {
-      const taskItem = task(todo);
+      const taskItem = task(todo, handleEditTask);
       mainArea.appendChild(taskItem);
     });
   }
@@ -131,4 +163,12 @@ projectForm.addEventListener("submit", (e) => {
     hideElement(projectForm);
     showElement(showAddProjectFormBtn);
   }
+});
+todayButton.addEventListener("click", () => {
+  const tasksForToday = getTodaysTasks();
+  mainArea.innerHTML = ""; // clear the main area
+  tasksForToday.forEach((todoItem) => {
+    const taskElement = task(todoItem);
+    mainArea.appendChild(taskElement);
+  });
 });
