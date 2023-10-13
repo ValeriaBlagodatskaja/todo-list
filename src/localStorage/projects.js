@@ -64,7 +64,7 @@ export function getTodaysTasks() {
 export function getWeeksTasks() {
   const allProjects = getAllProjects();
   const today = new Date();
-  const endOfWeek = new Date().add(4).day();
+  const endOfWeek = new Date().add(6).day();
 
   let weeksTasks = [];
 
@@ -87,9 +87,12 @@ export const removeTask = (projectName, taskName) => {
   const projects = getAllProjects();
   const project = projects.find((proj) => proj.name === projectName);
   if (project) {
-    project.todos = project.todos.filter((task) => task !== taskName);
+    console.log("Before removing:", project.todos);
+    project.todos = project.todos.filter((task) => task.title !== taskName);
+    console.log("After removing:", project.todos);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+    console.log("Updated Projects:", JSON.stringify(projects));
   }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
 };
 
 export function updateTaskInLocalStorage(originalTitle, updatedTitle) {

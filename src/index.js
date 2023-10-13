@@ -134,7 +134,7 @@ function displayInMainArea(projectName) {
 
   if (selectedProject && selectedProject.todos.length) {
     selectedProject.todos.forEach((todo) => {
-      const taskItem = task(todo, handleEditTask);
+      const taskItem = task(todo, handleEditTask, projectName);
       mainArea.appendChild(taskItem);
     });
   }
