@@ -61,17 +61,36 @@ export function getTodaysTasks() {
   return todaysTasks;
 }
 
+function stripTimeFromDate(date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function getStartOfWeek(date) {
+  const startOfWeek = new Date(date);
+  const dayOfWeek = startOfWeek.getDay();
+  const difference = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // if it's Sunday, subtract 6 days, otherwise adjust to Monday
+  startOfWeek.setDate(date.getDate() + difference);
+  return stripTimeFromDate(startOfWeek);
+}
+
+function getEndOfWeek(date) {
+  const endOfWeek = new Date(date);
+  endOfWeek.setDate(endOfWeek.getDate() + 6);
+  return stripTimeFromDate(endOfWeek);
+}
+
 export function getWeeksTasks() {
   const allProjects = getAllProjects();
   const today = new Date();
-  const endOfWeek = new Date().add(6).day();
+  const startOfWeek = getStartOfWeek(today);
+  const endOfWeek = getEndOfWeek(startOfWeek);
 
   let weeksTasks = [];
 
   allProjects.forEach((project) => {
     const projectWeeksTasks = project.todos.filter((task) => {
-      const taskDate = Date.parse(task.dueDate);
-      return taskDate >= today && taskDate <= endOfWeek;
+      const taskDate = stripTimeFromDate(new Date(task.dueDate));
+      return taskDate >= startOfWeek && taskDate <= endOfWeek;
     });
     weeksTasks = weeksTasks.concat(projectWeeksTasks);
   });
